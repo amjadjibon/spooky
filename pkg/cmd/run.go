@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/amjadjibon/spooky/pkg/constant"
+	"github.com/amjadjibon/spooky/pkg/dictionary"
 	"github.com/amjadjibon/spooky/pkg/spooky"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
@@ -83,6 +84,15 @@ func Run() {
 							return spooky.CheckPassword(context)
 						},
 					},
+				},
+			},
+
+			{
+				Name: "dictionary",
+				Usage: "Dictionary",
+				Aliases: []string{"d"},
+				Action: func(context *cli.Context) error {
+					return dictionary.Dictionary(context)
 				},
 			},
 		},
