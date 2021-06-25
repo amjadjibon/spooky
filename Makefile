@@ -8,6 +8,7 @@ update-module:
 	go get -u github.com/sirupsen/logrus
 	go get -u github.com/alexandrevicenzi/unchained
 	go get -u github.com/oklog/ulid
+	go get github.com/google/uuid
 
 run:
 	go run cmd/spooky.go

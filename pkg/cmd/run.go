@@ -103,6 +103,14 @@ func Run() {
 					return spooky.GetULID(context)
 				},
 			},
+
+			{
+				Name: "uuid",
+				Usage: "UUID",
+				Action: func(context *cli.Context) error {
+					return spooky.GetUUID(context)
+				},
+			},
 		},
 	}
 	err := app.Run(os.Args)
