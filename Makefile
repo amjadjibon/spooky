@@ -7,6 +7,7 @@ update-module:
 	go get -u github.com/urfave/cli/v2
 	go get -u github.com/sirupsen/logrus
 	go get -u github.com/alexandrevicenzi/unchained
+	go get -u github.com/oklog/ulid
 
 run:
 	go run cmd/spooky.go

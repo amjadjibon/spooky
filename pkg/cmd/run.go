@@ -95,6 +95,14 @@ func Run() {
 					return dictionary.Dictionary(context)
 				},
 			},
+
+			{
+				Name: "ulid",
+				Usage: "ULID",
+				Action: func(context *cli.Context) error {
+					return spooky.GetULID(context)
+				},
+			},
 		},
 	}
 	err := app.Run(os.Args)
