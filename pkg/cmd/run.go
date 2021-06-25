@@ -1,0 +1,83 @@
+package cmd
+
+import (
+	"fmt"
+	"github.com/amjadjibon/spooky/pkg/constant"
+	"github.com/amjadjibon/spooky/pkg/spooky"
+	log "github.com/sirupsen/logrus"
+	"github.com/urfave/cli/v2"
+	"os"
+	"time"
+)
+
+func Run() {
+	log.Debug("spooky cli app")
+	app := cli.App{
+		Name:  "spooky",
+		Usage: "Spooky",
+		Action: func(context *cli.Context) error {
+			fmt.Println("Spooky Command Line Application")
+			return cli.ShowAppHelp(context)
+		},
+		Commands: []*cli.Command{
+			{
+				Name:    "version",
+				Usage:   "Shows the version of running spooky",
+				Aliases: []string{"v"},
+				Action: func(context *cli.Context) error {
+					fmt.Println(constant.Version)
+					return nil
+				},
+			},
+			{
+				Name:    "get",
+				Usage:   "Get status code for webpages. Example: 'spooky get facebook.com google.com'",
+				Aliases: []string{"g"},
+				Action: func(context *cli.Context) error {
+					return spooky.GetStatusCode(context)
+				},
+			},
+
+			{
+				Name:    "time",
+				Usage:   "Time",
+				Aliases: []string{"t"},
+				Action: func(context *cli.Context) error {
+					fmt.Println(time.Now())
+					return nil
+				},
+
+				Subcommands: []*cli.Command{
+					{
+						Name: "utc",
+						Action: func(context *cli.Context) error {
+							fmt.Println(time.Now().UTC().Format(time.RFC3339Nano))
+							return nil
+						},
+					},
+				},
+			},
+
+			{
+				Name:  "password",
+				Usage: "Get password hashes and verify passwords with the hash",
+
+				Subcommands: []*cli.Command{
+					{
+						Name: "hash",
+						Flags: []cli.Flag{
+							&cli.StringFlag{Name: "algorithm", Aliases: []string{"a"}},
+						},
+						Action: func(context *cli.Context) error {
+							return spooky.GenerateHashes(context)
+						},
+					},
+				},
+			},
+		},
+	}
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Error(err)
+	}
+}
