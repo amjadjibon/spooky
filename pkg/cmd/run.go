@@ -72,6 +72,17 @@ func Run() {
 							return spooky.GenerateHashes(context)
 						},
 					},
+
+					{
+						Name: "check",
+						Flags: []cli.Flag{
+							&cli.StringFlag{Name: "password"},
+							&cli.StringFlag{Name: "hash"},
+						},
+						Action: func(context *cli.Context) error {
+							return spooky.CheckPassword(context)
+						},
+					},
 				},
 			},
 		},

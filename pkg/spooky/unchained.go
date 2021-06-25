@@ -22,3 +22,21 @@ func GenerateHashes(c *cli.Context) error {
 	}
 	return nil
 }
+
+func CheckPassword(c *cli.Context) error {
+	password := c.String("password")
+	hash := c.String("hash")
+
+	valid, err := unchained.CheckPassword(password, hash)
+
+	if valid {
+		fmt.Printf("[%s] [%s] [valid]\n", password, hash)
+	} else {
+		if err == nil {
+			fmt.Printf("[%s] [%s] [invalid]\n", password, hash)
+		} else {
+			return err
+		}
+	}
+	return nil
+}
