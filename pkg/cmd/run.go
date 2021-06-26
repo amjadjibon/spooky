@@ -63,10 +63,11 @@ func Run() {
 			{
 				Name:  "password",
 				Usage: "Get password hashes and verify passwords with the hash",
-
 				Subcommands: []*cli.Command{
 					{
 						Name: "hash",
+						Usage: "Get password hashes",
+						HelpName: "hash",
 						Flags: []cli.Flag{
 							&cli.StringFlag{Name: "algorithm", Aliases: []string{"a"}},
 						},
@@ -77,6 +78,7 @@ func Run() {
 
 					{
 						Name: "check",
+						Usage: "Verify password hashes",
 						Flags: []cli.Flag{
 							&cli.StringFlag{Name: "password"},
 							&cli.StringFlag{Name: "hash"},

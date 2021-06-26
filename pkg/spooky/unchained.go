@@ -14,6 +14,9 @@ func makeHash(pass string, algorithm string) (string, error) {
 func GenerateHashes(c *cli.Context) error {
 	algorithm := c.String("algorithm")
 	for _, pass := range c.Args().Slice() {
+		if algorithm == ""{
+			algorithm = "default"
+		}
 		hash, err := makeHash(pass, algorithm)
 		if err != nil {
 			return err
