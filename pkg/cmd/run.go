@@ -111,6 +111,29 @@ func Run() {
 					return spooky.GetUUID(context)
 				},
 			},
+			{
+				Name: "pubip",
+				Usage: "My Public IP Address",
+				Action: func(context *cli.Context) error {
+					return spooky.GetPubIP(context)
+				},
+			},
+
+			{
+				Name: "ip",
+				Usage: "My Local Machine IP Address",
+				Action: func(context *cli.Context) error {
+					return spooky.MyLocalIP(context)
+				},
+			},
+
+			{
+				Name: "infoip",
+				Usage: "Information of IP",
+				Action: func(context *cli.Context) error {
+					return spooky.MyLocalIP(context)
+				},
+			},
 		},
 	}
 	err := app.Run(os.Args)
