@@ -10,6 +10,7 @@ update-module:
 	go get -u github.com/oklog/ulid
 	go get github.com/google/uuid
 	go get -u github.com/go-resty/resty/v2
+	go get -u github.com/distatus/battery
 
 
 run:

@@ -137,6 +137,14 @@ func Run() {
 					return ipapi.GetIPInformation(context)
 				},
 			},
+
+			{
+				Name: "battery",
+				Usage: "Shows battery information of the device",
+				Action: func(context *cli.Context) error {
+					return spooky.GetBatteryInfo(context)
+				},
+			},
 		},
 	}
 	err := app.Run(os.Args)
