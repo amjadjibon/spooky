@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/amjadjibon/spooky/pkg/constant"
 	"github.com/amjadjibon/spooky/pkg/dictionary"
+	"github.com/amjadjibon/spooky/pkg/fakeit"
 	"github.com/amjadjibon/spooky/pkg/ipapi"
 	"github.com/amjadjibon/spooky/pkg/spooky"
 	log "github.com/sirupsen/logrus"
@@ -143,6 +144,15 @@ func Run() {
 				Usage: "Shows battery information of the device",
 				Action: func(context *cli.Context) error {
 					return spooky.GetBatteryInfo(context)
+				},
+			},
+
+
+			{
+				Name: "fakeit",
+				Usage: "Give Fake Data",
+				Action: func(context *cli.Context) error {
+					return fakeit.Fake(context)
 				},
 			},
 		},

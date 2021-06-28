@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/alexandrevicenzi/unchained v1.3.0 // indirect
+	github.com/brianvoe/gofakeit/v6 v6.5.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/distatus/battery v0.10.0 // indirect
 	github.com/go-resty/resty/v2 v2.6.0 // indirect
