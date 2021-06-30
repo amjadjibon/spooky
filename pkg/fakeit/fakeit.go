@@ -20,13 +20,15 @@ func FakeIt(input string) {
 			return
 		}
 		fmt.Println(string(jsonBytes))
+	case "email":
+		fmt.Println(faker.Email())
 	default:
 		fmt.Println(faker.Word())
 	}
 
 }
 
-func Fake(c *cli.Context) error  {
+func Fake(c *cli.Context) error {
 	input := c.Args().First()
 
 	FakeIt(input)
