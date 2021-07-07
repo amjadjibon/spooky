@@ -22,6 +22,8 @@ func FakeIt(input string) {
 		fmt.Println(string(jsonBytes))
 	case "email":
 		fmt.Println(faker.Email())
+	case "password":
+		fmt.Printf("%v\n",faker.Password(true, true, true, true, false, 20))
 	default:
 		fmt.Println(faker.Word())
 	}
