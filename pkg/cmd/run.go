@@ -204,7 +204,7 @@ func Run() {
 						Name:  "send",
 						Usage: "send email",
 						Action: func(context *cli.Context) error {
-							return email.SendMail(context)
+							return email.SendEmail(context)
 						},
 					},
 				},
