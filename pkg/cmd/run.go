@@ -5,6 +5,7 @@ import (
 	"github.com/amjadjibon/spooky/pkg/constant"
 	"github.com/amjadjibon/spooky/pkg/db"
 	"github.com/amjadjibon/spooky/pkg/dictionary"
+	"github.com/amjadjibon/spooky/pkg/email"
 	"github.com/amjadjibon/spooky/pkg/fakeit"
 	"github.com/amjadjibon/spooky/pkg/ipapi"
 	"github.com/amjadjibon/spooky/pkg/spooky"
@@ -183,6 +184,27 @@ func Run() {
 						Usage: "print postgres database version",
 						Action: func(context *cli.Context) error {
 							return db.PostgresVersion(context)
+						},
+					},
+				},
+			},
+
+			{
+				Name: "email",
+				Usage: "send email to others",
+				Flags: []cli.Flag{
+					&cli.StringFlag{Name: "from"},
+					&cli.StringFlag{Name: "pass"},
+					&cli.StringFlag{Name: "to"},
+					&cli.StringFlag{Name: "message"},
+				},
+
+				Subcommands: []*cli.Command{
+					{
+						Name:  "send",
+						Usage: "send email",
+						Action: func(context *cli.Context) error {
+							return email.SendMail(context)
 						},
 					},
 				},
