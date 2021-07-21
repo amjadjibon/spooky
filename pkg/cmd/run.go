@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/amjadjibon/spooky/pkg/constant"
+	"github.com/amjadjibon/spooky/pkg/db"
 	"github.com/amjadjibon/spooky/pkg/dictionary"
 	"github.com/amjadjibon/spooky/pkg/fakeit"
 	"github.com/amjadjibon/spooky/pkg/ipapi"
@@ -153,6 +154,37 @@ func Run() {
 				Usage: "Give Fake Data",
 				Action: func(context *cli.Context) error {
 					return fakeit.Fake(context)
+				},
+			},
+
+			{
+				Name: "postgres",
+				Usage: "postgres",
+				Flags: []cli.Flag{
+					&cli.StringFlag{Name: "user"},
+					&cli.StringFlag{Name: "pass"},
+					&cli.StringFlag{Name: "host"},
+					&cli.StringFlag{Name: "port"},
+					&cli.StringFlag{Name: "db_name"},
+					&cli.StringFlag{Name: "sslmode"},
+				},
+
+				Subcommands: []*cli.Command{
+					{
+						Name: "ping",
+						Usage: "ping postgres database",
+						Action: func(context *cli.Context) error {
+							return db.PingPostgres(context)
+						},
+					},
+
+					{
+						Name: "version",
+						Usage: "print postgres database version",
+						Action: func(context *cli.Context) error {
+							return db.PostgresVersion(context)
+						},
+					},
 				},
 			},
 		},
