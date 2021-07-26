@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"reflect"
-	"strings"
 )
 
 type A struct {
@@ -21,6 +20,8 @@ type A struct {
 			}
 		}
 	}
+
+	M map[string]interface{}
 }
 
 type StructGetType struct {
@@ -74,37 +75,118 @@ func getElemVars(structType StructGetType) []StructGetType {
 	return listStructGetType
 }
 
+var TypeMap = make(map[string]interface{})
 
-func (a *A) GetValue(input string)  {
-	inputSlice := strings.Split(input, ".")
-	fmt.Println(inputSlice)
+func getStructPrintRec(structType StructGetType) {
+	for i := 0; i < structType.Value.NumField(); i++ {
+		varName := structType.Value.Type().Field(i).Name
+		varType := structType.Value.Type().Field(i).Type
+		varValue := structType.Value.Field(i)
+		//fmt.Printf("%v %v %v\n", varName,varType,varValue)
+		structGetType := StructGetType{
+			Name:  structType.Name + "." + varName,
+			Type:  varType,
+			Value: varValue,
+		}
 
-	//fmt.Println(getVar(a))
+		if structGetType.Type.Kind() != reflect.Struct {
+			TypeMap[structGetType.Name] = structGetType.Value.Interface()
+			fmt.Println(structGetType.Name, structGetType.Type.Kind(), structGetType.Value.Interface())
+		}
 
-	for _, structType := range getVar(reflect.ValueOf(a)) {
-		fmt.Println(structType.Name, structType.Type.String())
+		if structGetType.Type.Kind() == reflect.Struct {
+			//fmt.Println(structGetType.Type.Kind())
+			getStructPrintRec(structGetType)
+		} else {
 
-		if strings.HasPrefix(structType.Type.String(), "struct") {
-			//splitStr := strings.Split(structType.Type.String(), " ")
-			//fmt.Println(linearSearch(splitStr, "struct"))
-
-			for i := 0; i < 3; i++ {
-				fmt.Println(getElemVars(structType))
-			}
-
-			//elems := reflect.ValueOf(structType.Value).Elem()
-			//
-			//fmt.Println(elems)
-
-			//fmt.Println(getVar(structType.Value.Elem()))
 		}
 	}
+}
+
+func getStructPrint(structType StructGetType) {
+	for i := 0; i < structType.Value.NumField(); i++ {
+		varName := structType.Value.Type().Field(i).Name
+		varType := structType.Value.Type().Field(i).Type
+		varValue := structType.Value.Field(i)
+		//fmt.Printf("%v %v %v\n\n", varName,varType,varValue)
+		structGetType := StructGetType{
+			Name:  structType.Name + "." + varName,
+			Type:  varType,
+			Value: varValue,
+		}
+		fmt.Println(structType.Name ,structGetType.Type.String())
+	}
+}
+
+
+func (a *A) GetValue(input string) interface{} {
+	for _, structType := range getVar(reflect.ValueOf(a)) {
+		if structType.Type.Kind() != reflect.Struct {
+			TypeMap[structType.Name] = structType.Value.Interface()
+			fmt.Println(structType.Name, structType.Type.Kind(), structType.Value.Interface())
+		}
+		if structType.Type.Kind() == reflect.Struct {
+			getStructPrintRec(structType)
+		}
+	}
+
+	return TypeMap[input]
+}
+
+func getMapStruct(structType StructGetType)  {
+	for _, element := range structType.Value.MapKeys() {
+		structGetType := StructGetType{
+			Name:  structType.Name + "." + element.String(),
+			Type:  structType.Value.MapIndex(element).Type(),
+			Value: structType.Value.MapIndex(element),
+		}
+
+		fmt.Println(structGetType.Name, structGetType.Type.Kind(), structGetType.Value.Interface())
+		TypeMap[structGetType.Name] = structGetType.Value.Interface()
+		//
+		////fmt.Println(structGetType.Name, structGetType.Type.Kind())
+		//
+		switch structGetType.Value.Interface().(type) {
+		case map[string]interface{}:
+			//fmt.Println(t)
+			fmt.Println(reflect.TypeOf(structGetType.Value))
+
+			//getMapStruct(structGetType)
+		default:
+			TypeMap[structGetType.Name] = structGetType.Value.Interface()
+		}
+	}
+}
+
+
+func GetValue2(a *A, input string) interface{} {
+	for _, structType := range getVar(reflect.ValueOf(a)) {
+		if structType.Type.Kind() != reflect.Struct && structType.Type.Kind() != reflect.Map {
+			TypeMap[structType.Name] = structType.Value.Interface()
+			fmt.Println(structType.Name, structType.Type.Kind(), structType.Value.Interface())
+		}
+		if structType.Type.Kind() == reflect.Struct {
+			getStructPrintRec(structType)
+		}
+
+		if structType.Type.Kind() == reflect.Map {
+			//getMapStruct(structType)
+			fmt.Println(structType.Value.Interface())
+		}
+
+		//switch structType.Value.Interface().(type) {
+		//case map[string]interface{}:
+		//	getMapStruct(structType)
+		//}
+	}
+
+	return TypeMap[input]
 }
 
 func main()  {
 	a := A{
 		B: "Hello",
-		C: 0,
+		C: 2,
 		D: false,
 		E: struct {
 			F string
@@ -114,21 +196,24 @@ func main()  {
 				J float32
 				K struct{ L string }
 			}
-		}{F: "New", G: false, H: struct {
+		}{F: "Go", G: false, H: struct {
 			I int
 			J float32
 			K struct{ L string }
-		}{I: 0, J: 1, K: struct{ L string }{L: "str"}}},
+		}{I: 7, J: 1.5, K: struct{ L string }{L: "World"}}},
+		M: map[string]interface{}{
+			"key1" : "value1",
+			"key2" : "value2",
+			"key3" : "value3",
+
+			"key4" : 10,
+			"key5" : false,
+
+			"key6" : map[string]interface{} {
+				"key7" : "value7",
+			},
+		},
 	}
 
-	//marshal, err := json.Marshal(a)
-	//if err != nil {
-	//	return
-	//}
-	//fmt.Println(string(marshal))
-
-	//val := reflect.Indirect(reflect.ValueOf(a))
-	//fmt.Println(val.Field(0).Type().Name())
-
-	a.GetValue("E")
+	fmt.Println(GetValue2(&a,"M"))
 }
