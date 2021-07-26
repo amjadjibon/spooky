@@ -149,12 +149,28 @@ func getMapStruct(structType StructGetType)  {
 		switch structGetType.Value.Interface().(type) {
 		case map[string]interface{}:
 			//fmt.Println(t)
-			fmt.Println(reflect.TypeOf(structGetType.Value))
+			//fmt.Println(reflect.TypeOf(structGetType.Value))
+			//getInterfaceValue(structGetType.Value.Interface())
 
 			//getMapStruct(structGetType)
 		default:
 			TypeMap[structGetType.Name] = structGetType.Value.Interface()
 		}
+	}
+}
+
+func getInterfaceValue(input interface{}) {
+	switch t := input.(type) {
+	case map[string]interface{}:
+		fmt.Println(t)
+	case interface{}:
+		fmt.Println(t)
+	case int:
+	case float32:
+	case bool:
+	case string:
+	default:
+		fmt.Println("unknown")
 	}
 }
 
@@ -170,7 +186,7 @@ func GetValue2(a *A, input string) interface{} {
 		}
 
 		if structType.Type.Kind() == reflect.Map {
-			//getMapStruct(structType)
+			getMapStruct(structType)
 			fmt.Println(structType.Value.Interface())
 		}
 
@@ -215,5 +231,5 @@ func main()  {
 		},
 	}
 
-	fmt.Println(GetValue2(&a,"M"))
+	fmt.Println(GetValue2(&a,"M.key1"))
 }
