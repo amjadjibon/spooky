@@ -22,7 +22,7 @@ func GetValues(inputModel interface{}, keyStruct string) {
 	}
 	for key, val := range mapInputModel {
 		if reflect.ValueOf(val).Type().Kind() == reflect.Map {
-			GetValues(val, keyStruct + "." + key)
+			GetValues(val, keyStruct+"."+key)
 		} else {
 			storeKeys := keyStruct + "." + key
 			storeKeys = strings.TrimPrefix(storeKeys, ".")
@@ -39,4 +39,29 @@ func GetModelKeyValue(inputModel interface{}, key string) string {
 		return ""
 	}
 	return fmt.Sprintf("%v", val)
+}
+
+//=========================vm===================
+
+type InputValidator struct {
+	InputModel map[string]interface{}
+	Key        string
+	Required   bool
+	Regex      string
+}
+
+func (i *InputValidator) GetInputModel() map[string]interface{} {
+	return i.InputModel
+}
+
+func (i *InputValidator) GetKey() string {
+	return i.Key
+}
+
+func (i *InputValidator) GetRequired() bool {
+	return i.Required
+}
+
+func (i *InputValidator) GetRegex() string {
+	return i.Regex
 }

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/amjadjibon/spooky/pkg/abesh/generator"
 	"github.com/amjadjibon/spooky/pkg/constant"
 	"github.com/amjadjibon/spooky/pkg/db"
 	"github.com/amjadjibon/spooky/pkg/dictionary"
@@ -208,6 +209,59 @@ func Run() {
 						},
 					},
 				},
+			},
+
+			//{
+			//	Name: "gocv",
+			//	Usage: "golang opencv implementation",
+			//	Action: func(context *cli.Context) error {
+			//		return opencv.OpenWebcam(context)
+			//	},
+			//},
+
+			{
+				Name: "abesh",
+				Usage: "golang abesh implementation",
+
+				Subcommands: []*cli.Command{
+					{
+						Name:  "generate",
+						Usage: "generate abesh files",
+
+						Subcommands: []*cli.Command{
+							{
+								Name:  "service",
+								Usage: "generate abesh service",
+								Flags: []cli.Flag{
+									&cli.StringFlag{Name: "file"},
+									&cli.StringFlag{Name: "package"},
+									&cli.StringFlag{Name: "struct"},
+									&cli.StringFlag{Name: "service"},
+									&cli.StringFlag{Name: "contract"},
+								},
+								Action: func(context *cli.Context) error {
+									return generator.GenerateService(context)
+								},
+							},
+
+							{
+								Name:  "trigger",
+								Usage: "generate abesh trigger",
+								Flags: []cli.Flag{
+									&cli.StringFlag{Name: "file"},
+									&cli.StringFlag{Name: "package"},
+									&cli.StringFlag{Name: "struct"},
+									&cli.StringFlag{Name: "service"},
+									&cli.StringFlag{Name: "contract"},
+								},
+								Action: func(context *cli.Context) error {
+									return generator.GenerateTrigger(context)
+								},
+							},
+						},
+					},
+				},
+
 			},
 		},
 	}

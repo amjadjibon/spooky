@@ -12,6 +12,7 @@ update-module:
 	go get -u github.com/go-resty/resty/v2
 	go get -u github.com/distatus/battery
 	go get github.com/brianvoe/gofakeit/v6
+	go get -u github.com/mkawserm/abesh
 
 
 run:
